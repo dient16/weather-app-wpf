@@ -1,0 +1,745 @@
+﻿<Window x:Class="Weather_App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+        xmlns:local="clr-namespace:Weather_App"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:uc="clr-namespace:Weather_App.UserController"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"  
+        TextElement.FontWeight="Regular" 
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"  
+        TextOptions.TextRenderingMode="Auto"   
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        x:Name="mainwindow"
+        FontFamily="{DynamicResource MaterialDesignFont}" Loaded="mainwindow_Loaded"
+        WindowStyle="None"  WindowStartupLocation="CenterScreen" Background="Transparent"
+        Title="Weather App - Nhóm 14" Height="850" Width="1350" AllowsTransparency="True" ResizeMode="NoResize" Closed="mainwindow_Closed">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+                <ResourceDictionary Source="/UserController/ScrollViewerCustom1.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border Background="#f2f2f2" BorderThickness="2" CornerRadius="40" BorderBrush="#ebedf3"  Padding="10" MouseDown="Border_MouseDown">
+        <Border CornerRadius="40">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#fefefe" Offset="0"></GradientStop>
+                    <GradientStop Color="#fefefe" Offset="1"></GradientStop>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <uc:UserControlBarUC  Tag="{Binding Title, ElementName=mainwindow}"></uc:UserControlBarUC>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#42d1f5" CornerRadius="30" Margin="20" Grid.Column="0">
+                            <Grid>
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                                    <Button Style="{StaticResource TopMenuButton}">
+                                        <materialDesign:PackIcon Kind="Home" Style="{StaticResource MenuIconButton}"/>
+                                        <Button.Triggers>
+                                            <EventTrigger RoutedEvent="Button.Click">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="page1" 
+                                                             Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
+                                                             To="0" Duration="00:00:0.5"/>
+
+                                                        <DoubleAnimation Storyboard.TargetName="page2" 
+                                                             Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
+                                                             To="{Binding ElementName=mainwindow,Path=ActualHeight}" Duration="00:00:0.3"/>
+
+                                                        <DoubleAnimation Storyboard.TargetName="page1"
+                                                             Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0.5"/>
+
+                                                        <DoubleAnimation Storyboard.TargetName="page2"
+                                                             Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:0.5"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                    <Separator Background="#877cc5" Margin="20 0 20 10" Height="0.9"></Separator>
+                                    <Button Style="{StaticResource TopMenuButton}"  >
+                                        <materialDesign:PackIcon Kind="CalendarToday" Style="{StaticResource MenuIconButton}"/>
+                                        <Button.Triggers>
+                                            <EventTrigger RoutedEvent="Button.Click">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="page1"
+                                                             Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
+                                                             To="{Binding ElementName=mainwindow,Path=ActualHeight}" Duration="00:00:0.2"/>
+
+                                                        <DoubleAnimation Storyboard.TargetName="page2" 
+                                                             Storyboard.TargetProperty="(Border.RenderTransform).(TranslateTransform.Y)"
+                                                             To="0" Duration="00:00:0.5"/>
+
+                                                        <DoubleAnimation Storyboard.TargetName="page1"
+                                                             Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:0.2"/>
+
+                                                        <DoubleAnimation Storyboard.TargetName="page2"
+                                                             Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            
+                                        </Button.Triggers>
+                                        
+                                    </Button>
+                                    <Button Style="{StaticResource TopMenuButton}" x:Name="Setting_btn" Click="Setting_btn_Click">
+                                        <materialDesign:PackIcon  Kind="Settings" Style="{StaticResource MenuIconButton}"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Grid Grid.Column="1" Margin="5 10 25 20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" BorderBrush="#d9d9d9" BorderThickness="1" CornerRadius="15" HorizontalAlignment="Center" Width="350" Margin="6 25 0 15">
+                                    <Grid Margin="7 7">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image Source="/ImgSource/explore.png" Height="18" Margin="5 0 0 0"/>
+                                        <TextBlock x:Name="textSearch" MouseDown="textSearch_MouseDown" Text="  Search anything..." Style="{StaticResource textHint}"/>
+                                        <TextBox Name="txtSearch"
+                                                 TextChanged="txtSearch_TextChanged" Style="{StaticResource textBox}"/>
+                                    </Grid>
+                                </Border>
+                                <Grid Margin="40 30 40 10" Grid.Column="1">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Button
+                                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                            Width="100" Margin="0 0 0 7" Click="SeachButon_Click"
+                                            ToolTip="Tìm kiếm">
+                                            Tìm kiếm
+                                        </Button>
+                                        <Border Margin="20 0 0 5" Padding="5" CornerRadius="10" BorderThickness="2" BorderBrush="#3287a8">
+                                            <TextBlock x:Name="TimerCurr"  VerticalAlignment="Center"  FontSize="20">27/11/2022 11:22:11</TextBlock>
+                                        </Border>
+                                        
+                                    </StackPanel>
+                                   
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button x:Name="btn_ChangeCelsius"  Click="btn_ChangeDoC_Click" Content="°C" Style="{StaticResource button1}" Background="#1A1A1A" Foreground="#FFFFFF"/>
+                                        <Button x:Name="btn_ChangeFahrenheit" Click="btn_ChangeDoF_Click"  Content="°F" Style="{StaticResource button1}" Margin="10 0 0 0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            
+                            <!--Page 1-->
+                            <Border x:Name="page1" Style="{StaticResource borderPage}" Grid.Row="1" Margin="0">
+                                <Border.RenderTransform>
+                                    <TranslateTransform Y="0"/>
+                                </Border.RenderTransform>
+
+
+                                <Border CornerRadius="25">
+                                    <!--<Border.Background>
+                                        <ImageBrush ImageSource="/ImgSource/backgroud.png" Stretch="Fill" Opacity="0.6"/>
+                                    </Border.Background>-->
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" >
+                                            <Border Style="{StaticResource widgetBorder}" Width="350" Height="250" Margin="-30 0 0 20">
+                                                <!--<Border.Background>
+                                                    <ImageBrush ImageSource="/ImgSource/backgroud_sun.jpg" Opacity="0.2"></ImageBrush>
+                                                </Border.Background>-->
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="1.5*"></RowDefinition>
+                                                        <RowDefinition Height="2.5*"></RowDefinition>
+                                                        <RowDefinition Height="1*"></RowDefinition>
+                                                        <RowDefinition Height="2*"></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid Grid.Row="0">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="-5 0 0 0">
+                                                            <Image Source="/ImgSource/icon-location.png" Width="40" Height="40" ></Image>
+                                                            <Label FontStretch="UltraExpanded" Width="auto" Height="40" FontSize="26" 
+                                                       HorizontalAlignment="Center" FontWeight="Medium"
+                                                       VerticalAlignment="Center" x:Name="Lb_Location"
+                                                       HorizontalContentAlignment="Center"
+                                                       VerticalContentAlignment ="Center">Bình Định</Label>
+                                                        </StackPanel>
+                                                       
+                                                    </Grid>
+                                                    <Grid Grid.Row="1">
+
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid Grid.Column="0" >
+                                                            <Image Height="80"  Margin="0 0 0 -10"  x:Name="Img_IconCurr" Source="/ImgSource/icon.png"></Image>
+                                                        </Grid>
+                                                        <Grid Grid.Column="1" >
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                                <Label Content="35" Height="70" FontSize="50" FontWeight="DemiBold"
+                                                           HorizontalContentAlignment="Center" x:Name="Lb_TempCurr"
+                                                           VerticalContentAlignment ="Center"></Label>
+                                                                <Label Content="°C" Height="70" FontSize="45" Margin="0 0 30 0"
+                                                           HorizontalContentAlignment="Center" x:Name="Text_Unit"
+                                                           VerticalContentAlignment ="Center"></Label>
+                                                            </StackPanel>
+                                                            
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid Grid.Row="2" Margin="0 -10 0 0">
+                                                        <Label x:Name="Lb_StatusWeatherCurrent" FontStretch="UltraExpanded" Height="30" FontSize="15"
+                                                        HorizontalContentAlignment="Center" VerticalContentAlignment ="Center">Trời nhiều nắng</Label>
+                                                    </Grid>
+                                                    <Grid Grid.Row="3" Width="300">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border Grid.Column="0" Style="{StaticResource widgetBorder}" Margin="0 0 5 0" Padding="0"
+                                                                Background="#19283f">
+                                                            <StackPanel>
+                                                                <Label FontSize="15" Foreground="White" FontWeight="Thin"
+                                                                   HorizontalContentAlignment="Center" VerticalContentAlignment ="Center">Thấp nhất</Label>
+                                                                <Label x:Name="Lb_tempmin" FontSize="15" Foreground="White"
+                                                                   HorizontalContentAlignment="Center" VerticalContentAlignment ="Center">21°C</Label>
+                                                            </StackPanel>
+                                                        </Border>
+                                                        <Border Grid.Column="1" Style="{StaticResource widgetBorder}" Margin="0 0 5 0" Padding="0"
+                                                                Background="#cce16a">
+                                                            <StackPanel>
+                                                                <Label FontSize="15" FontWeight="Thin"
+                                                                   HorizontalContentAlignment="Center" VerticalContentAlignment ="Center">Cao nhất</Label>
+                                                                <Label x:Name="Lb_tempmax" Height="30" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center"
+                                                                       VerticalContentAlignment ="Center">32°C</Label>
+                                                            </StackPanel>
+                                                        </Border>
+                                                        <Border Grid.Column="2" Style="{StaticResource widgetBorder}" Margin="0" Padding="0"
+                                                                Background="#e5dede">
+                                                            <StackPanel>
+                                                                <Label FontSize="15" FontWeight="Thin"
+                                                                   HorizontalContentAlignment="Center" VerticalContentAlignment ="Center">Mặt trăng lên</Label>
+                                                                <Label x:Name="Monrise"  Height="30" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center"
+                                                                       VerticalContentAlignment ="Center">19:00</Label>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </Grid>
+                                                </Grid>
+                                            </Border>
+                                            <Border CornerRadius="30"  Background="#f7f7f7">
+                                                <StackPanel >
+                                                    <TextBlock FontSize="20" FontWeight="SemiBold" 
+                                                           Margin="15">Thời tiết các giờ tiếp theo</TextBlock>
+                                                    <ScrollViewer  Grid.Column="1" VerticalScrollBarVisibility="Visible" Height="370" >
+                                                        <WrapPanel x:Name="WrapPanel_cardhours">
+                                                            <uc:CardHours x:Name="Card_hours0" Hours="08:00" Temp="6°C" Source="/ImgSource/night/350.png"/>
+                                                            <uc:CardHours x:Name="Card_hours1" Hours="09:00" Temp="10°C" Source="/ImgSource/night/119.png"/>
+                                                            <uc:CardHours x:Name="Card_hours2" Hours="10:00" Temp="-10°C" Source="/ImgSource/day/116.png"/>
+                                                            <uc:CardHours x:Name="Card_hours3" Hours="11:00" Temp="-1°C" Source="/ImgSource/night/185.png"/>
+                                                            <uc:CardHours x:Name="Card_hours4" Hours="12:00" Temp="3°C" Source="/ImgSource/day/248.png"/>
+                                                            <uc:CardHours x:Name="Card_hours5" Hours="13:00" Temp="10°C" Source="/ImgSource/night/284.png"/>
+                                                            <uc:CardHours x:Name="Card_hours6" Hours="14:00" Temp="-3°C" Source="/ImgSource/night/113.png"/>
+                                                            <uc:CardHours x:Name="Card_hours7" Hours="15:00" Temp="6°C" Source="/ImgSource/day/200.png"/>
+                                                            <uc:CardHours x:Name="Card_hours8" Hours="16:00" Temp="-10°C" Source="/ImgSource/day/176.png"/>
+                                                            <uc:CardHours x:Name="Card_hours9" Hours="17:00" Temp="-1°C" Source="/ImgSource/day/302.png"/>
+                                                            <uc:CardHours x:Name="Card_hours10" Hours="18:00" Temp="3°C" Source="/ImgSource/day/263.png"/>
+                                                            <uc:CardHours x:Name="Card_hours11" Hours="19:00" Temp="10°C" Source="/ImgSource/night/311.png"/>
+                                                            <uc:CardHours x:Name="Card_hours12" Hours="20:00" Temp="-3°C" Source="/ImgSource/day/326.png"/>
+                                                            <uc:CardHours x:Name="Card_hours13" Hours="21:00" Temp="6°C" Source="/ImgSource/day/263.png"/>
+                                                            <uc:CardHours x:Name="Card_hours14" Hours="22:00" Temp="-10°C" Source="/ImgSource/night/329.png"/>
+                                                            <uc:CardHours x:Name="Card_hours15" Hours="23:00" Temp="-1°C" Source="/ImgSource/night/395.png"/>
+                                                            <uc:CardHours x:Name="Card_hours16" Hours="01:00" Temp="3°C" Source="/ImgSource/day/392.png"/>
+                                                            <uc:CardHours x:Name="Card_hours17" Hours="02:00" Temp="10°C" Source="/ImgSource/day/371.png"/>
+                                                            <uc:CardHours x:Name="Card_hours18" Hours="03:00" Temp="-3°C" Source="/ImgSource/night/365.png"/>
+                                                            <uc:CardHours x:Name="Card_hours19" Hours="04:00" Temp="6°C" Source="/ImgSource/day/338.png"/>
+                                                            <uc:CardHours x:Name="Card_hours20" Hours="05:00" Temp="10°C" Source="/ImgSource/night/359.png"/>
+                                                            <uc:CardHours x:Name="Card_hours21" Hours="06:00" Temp="-3°C" Source="/ImgSource/day/263.png"/>
+                                                            <uc:CardHours x:Name="Card_hours22" Hours="07:00" Temp="6°C" Source="/ImgSource/night/368.png"/>
+                                                            <uc:CardHours x:Name="Card_hours23" Hours="08:00" Temp="10°C" Source="/ImgSource/day/263.png"/>
+                                                        </WrapPanel>
+                                                    </ScrollViewer>
+                                                </StackPanel>
+                                            </Border>
+                                           
+                                            
+                                        </StackPanel>
+                                        <Grid Grid.Column="1" Margin="40 -10 0 0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <Grid Grid.Column="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="1*"></RowDefinition>
+                                                    <RowDefinition Height="1*"></RowDefinition>
+                                                </Grid.RowDefinitions>
+                                                <Grid Grid.Row="0">
+
+
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition></ColumnDefinition>
+                                                        <ColumnDefinition></ColumnDefinition>
+                                                        <ColumnDefinition></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <!--Widget 1-->
+                                                    <Border Style="{StaticResource widgetBorder}"  Grid.Column="0" Grid.Row="0">
+                                                        <StackPanel>
+                                                            <TextBlock Text="Chỉ số UV" Style="{StaticResource titleText}"/>
+                                                            <StackPanel Orientation="Horizontal" Margin="0 0 0 6">
+                                                                <Image Source="/ImgSource/UV_icon.png" Width="40" Margin="5 0 10 0"></Image>
+                                                                <StackPanel>
+                                                                    <TextBlock x:Name="Lb_UVindex" Text="5" TextAlignment="Center" FontSize="27" FontWeight="SemiBold" Margin="0 2 0 2" />
+                                                                    <TextBlock x:Name="Lb_UVlevel" Text="Trung bình" TextAlignment="Center" FontSize="14" />
+                                                                </StackPanel>
+                                                            </StackPanel>
+
+                                                            <Slider x:Name="Slider_uvindex"  Style="{DynamicResource SliderStyle3}" Width="130" SelectionEnd="10" VerticalAlignment="Bottom" Value="4" Maximum="10"  Margin="-4 3 0 0"/>
+
+
+                                                        </StackPanel>
+                                                    </Border>
+                                                   
+                                                    <!--Widget 2-->
+                                                    <Border Style="{StaticResource widgetBorder}" Grid.Column="1" Grid.Row="0">
+                                                        <Grid>
+                                                            <StackPanel>
+                                                                <TextBlock Text="Độ ẩm" Style="{StaticResource titleText}"/>
+                
+                                                                
+                                                                <StackPanel Margin="0 10 0 10" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                    <Image Source="/ImgSource/icon_humidity.png" Width="25" Height="25" HorizontalAlignment="Center" Margin="0 0 6 0"></Image>
+                                                                    <TextBlock x:Name="Lb_DoAm" Text="56" FontSize="30" FontWeight="SemiBold"/>
+                                                                    <TextBlock Text="%" FontSize="14" VerticalAlignment="Bottom" Margin="5 0 0 3"/>
+                                                                </StackPanel>
+                                                                <StackPanel Margin="0 0 0 5" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                                                    <TextBlock x:Name="Lb_LevelDoAm" Text="Bình thường"  FontWeight="DemiBold" FontSize="14"/>
+                                                                    <!--<Image Source="/ImgSource/iconsun.png" Width="18" Height="18" Margin="10 0 0 0"/>-->
+                                                                </StackPanel>
+                                                                <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
+                                                                    <TextBlock Text="Điểm sương "  FontWeight="SemiBold" FontFamily="Segoe UI"/>
+                                                                    <TextBlock x:Name="Lb_dewpt" FontFamily="Segoe UI" Text="20°"  VerticalAlignment="Bottom" />
+                                                                </StackPanel>
+                                                                
+
+                                                                
+                                                            </StackPanel>
+                                                            <Slider x:Name="Slider_DoAm" Style="{DynamicResource SliderStyle1}" Value="56" Maximum="100" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="100"/>
+                                                        </Grid>
+                                                        
+                                                    </Border>
+                                                    <!--<Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="*"></RowDefinition>
+                                                            <RowDefinition Height="auto"></RowDefinition>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid Grid.Row="0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition></ColumnDefinition>
+                                                                <ColumnDefinition></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>-->
+                                                            <!--Widget 3-->
+                                                    <Border Style="{StaticResource widgetBorder}" Grid.Column="2" Grid.Row="0">
+                                                        <StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Image Source="/ImgSource/icon_visibility.png" Width="20" Height="20" HorizontalAlignment="Center" Margin="0 0 10 0"></Image>
+                                                                <TextBlock Text="Tầm nhìn" Style="{StaticResource titleText}"/>
+                                                                
+                                                            </StackPanel>
+                                                           
+                                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <TextBlock x:Name="Lb_TamNhin" Text="5.2" FontSize="30" FontWeight="SemiBold"/>
+                                                                <TextBlock Text="km" FontSize="14" VerticalAlignment="Bottom" Margin="5 0 0 3"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                                                <TextBlock x:Name="Lb_LevelTamNhin"  Text="Trung bình" FontWeight="DemiBold" FontSize="14"/>
+                                                                <!--<Image Source="/ImgSource/iconsun.png" Width="18" Height="18" Margin="10 0 0 0"/>-->
+                                                            </StackPanel>
+
+                                                            <Slider Height="29" x:Name="Slider_TamNhin" Style="{DynamicResource SliderStyle1}" VerticalAlignment="Bottom" Value="7" Maximum="25"  Margin="0 10 0 0" />
+                                                        </StackPanel>
+                                                    </Border>
+
+                                                    <!--Widget 4-->
+                                                    <Border Style="{StaticResource widgetBorder}" Grid.Column="0" Grid.Row="1">
+                                                        <Grid>
+                                                            <StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Source="/ImgSource/icon_rain.png" Width="20" Height="20" HorizontalAlignment="Center" Margin="0 0 10 0"></Image>
+                                                                    <TextBlock Text="Lượng mưa" Style="{StaticResource titleText}"/>
+
+                                                                </StackPanel>
+                                                                <StackPanel Margin="0 10 0 5" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                    <TextBlock x:Name="Lb_rain" Text="5" FontSize="34" FontWeight="SemiBold"/>
+                                                                    <TextBlock Text="mm" FontSize="14" VerticalAlignment="Bottom" Margin="5 0 0 3"/>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+                                                                    <TextBlock Text="Khả năng mưa" />
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock x:Name="Lb_daily_chance_of_rain" Text="92" FontWeight="SemiBold" FontSize="15"/>
+                                                                        <TextBlock Text="%" FontSize="10" VerticalAlignment="Bottom" Margin="5 0 0 3"/>
+                                                                    </StackPanel>
+                                                                </StackPanel>
+
+                                                                
+                                                            </StackPanel>
+                                                            <Slider x:Name="sld_Rain"  Style="{DynamicResource SliderStyle1}" Value="7" Maximum="100" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="90"/>
+                                                        </Grid>
+                                                        
+                                                    </Border>
+                                                  
+                                                    <!--Widget 5-->
+                                                    <Border Style="{StaticResource widgetBorder}" Grid.Column="1" Grid.Row="1">
+                                                        <StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Image Source="/ImgSource/icon_wind.png" Width="20" Height="20" HorizontalAlignment="Center" Margin="0 0 10 0"></Image>
+                                                                <TextBlock Text="Gió" Style="{StaticResource titleText}"/>
+                                                            </StackPanel>
+                                                            <StackPanel Margin="0 10" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <TextBlock x:Name="Lb_gio" Text="7.70" FontSize="34" FontWeight="SemiBold"/>
+                                                                <TextBlock Text="km/h" FontSize="14" VerticalAlignment="Bottom" Margin="5 0 0 3"/>
+                                                            </StackPanel>
+                                                            <StackPanel Margin="0 10" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                                                <Image Source="/ImgSource/dir.png" Width="25" Height="25" Margin="0 0 7 0"/>
+                                                                <TextBlock x:Name="Lb_huongGio" Text="Bắc Nam" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <!--Widget 6-->
+                                                    <Border Style="{StaticResource widgetBorder}" Grid.Column="3" Grid.Row="1" 
+                                                        Padding="20 5 10 10" ClipToBounds="True" >
+                                                        <Grid Margin="0 0 0 0" >
+                                                            <StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Source="/ImgSource/icon_Pressure.png" Width="20" Height="20" HorizontalAlignment="Center" Margin="0 0 10 0"></Image>
+                                                                    <TextBlock Text="Áp suất" Style="{StaticResource titleText}" Margin="0 10 0 5"/>
+
+                                                                </StackPanel>
+                                                                <lvc:AngularGauge x:Name="AngularGauge_apSuat" Value="1007" FromValue="870" ToValue="1120" 
+                                                                          LabelsStep="50" TicksStep="10" Wedge="270" Height="90" Width="90" 
+                                                                          TicksForeground="White" Foreground="Black" 
+                                                                          FontSize="7"
+                                                                          SectionsInnerRadius=".9">
+                                                                    <lvc:AngularGauge.Sections>
+                                                                        <lvc:AngularSection FromValue="870" ToValue="1120" Fill="DarkSlateGray"/>
+                                                                    </lvc:AngularGauge.Sections>
+                                                                </lvc:AngularGauge>
+
+                                                                <TextBlock x:Name="Lb_Apsuat" Text="1.007" Margin="0 -43 0 5" TextAlignment="Center" FontSize="17"
+                                                                           FontWeight="SemiBold"/>
+                                                                <TextBlock Text="hPa" Margin="0 -28 0 5" TextAlignment="Center" FontSize="15"
+                                                                           FontWeight="SemiBold"/>
+
+
+                                                            </StackPanel>
+
+                                                        </Grid>
+
+                                                    </Border>
+
+                                                </Grid>
+                                                <Border Panel.ZIndex="10" Grid.Row="1" CornerRadius="20" Padding="0"  Background="Transparent" Margin="0 10 10 0">
+                                                    <lvc:CartesianChart  Grid.Row="1" Margin="5 40 0 0" LegendLocation="None">
+                                                        <lvc:CartesianChart.DataTooltip>
+                                                            <lvc:DefaultTooltip Background="Red" Foreground="#ffffff" Opacity="0.7" BulletSize="10">
+                                                            </lvc:DefaultTooltip>
+                                                        </lvc:CartesianChart.DataTooltip>
+
+                                                        
+                                                        <lvc:CartesianChart.AxisX>
+                                                            <lvc:Axis ShowLabels="False">
+                                                                <!--<lvc:Axis.Separator>
+                                                                    <lvc:Separator StrokeThickness="2" Step="6"/>
+                                                                </lvc:Axis.Separator>-->
+                                                            </lvc:Axis>
+                                                        </lvc:CartesianChart.AxisX>
+
+                                                        <lvc:CartesianChart.AxisY>
+                                                            <lvc:Axis MinValue="-20" MaxValue="80" Foreground="#90A3B2" ShowLabels="False" Title="Nhiệt độ">
+                                                                <lvc:Axis.Separator>
+                                                                    <lvc:Separator StrokeThickness="0"/>
+                                                                </lvc:Axis.Separator>
+                                                            </lvc:Axis>
+                                                        </lvc:CartesianChart.AxisY>
+
+                                                        <lvc:CartesianChart.Series>
+                                                            <lvc:LineSeries x:Name="LiveChart_temp" Values="30,32,30,31,33,26,24,22,21" Fill="Transparent" StrokeThickness="5" PointGeometrySize="0">
+                                                                <lvc:LineSeries.Stroke>
+                                                                    <LinearGradientBrush>
+                                                                        <GradientStop Color="#ffffff" Offset="0.01"/>
+                                                                        <GradientStop Color="#2889FC" Offset="0.49"/>
+                                                                        <GradientStop Color="#ffffff" Offset="0.99"/>
+                                                                    </LinearGradientBrush>
+                                                                </lvc:LineSeries.Stroke>
+                                                            </lvc:LineSeries>
+                                                        </lvc:CartesianChart.Series>
+                                                    </lvc:CartesianChart>
+                                                </Border>
+
+                                                <Border Grid.Row="2" CornerRadius="20" Padding="0" Background="Transparent" Margin="0 10 10 0">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border BorderThickness="0 0 1 0" BorderBrush="#c9c9cd" Grid.Column="0">
+                                                            <Grid>
+                                                                <Button VerticalAlignment="Top" HorizontalAlignment="Center" Style="{StaticResource button2}"
+                                                                        Margin="0 50 0 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                                                    <Image x:Name="Img_3h" Source="/ImgSource/night/350.png" Width="40" Height="50" HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"></Image>
+                                                                </Button>
+                                                                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30">
+                                                                    <TextBlock x:Name="Txt_3h" FontSize="20" Panel.ZIndex="5" HorizontalAlignment="Center" FontFamily="Arial" FontWeight="SemiBold" >34°C</TextBlock>
+                                                                    <TextBlock FontSize="15" Panel.ZIndex="5" HorizontalAlignment="Center"  FontFamily="Segoe UI" VerticalAlignment="Bottom">Buổi đêm</TextBlock>
+                                                                </StackPanel>
+
+                                                            </Grid>
+                                                        </Border>
+                                                        <Border BorderThickness="0 0 1 0" BorderBrush="#c9c9cd" Grid.Column="1">
+                                                            <Grid >
+                                                                <Button VerticalAlignment="Top" HorizontalAlignment="Center" Style="{StaticResource button2}"
+                                                                        Margin="0 40 0 0">
+                                                                    <Image x:Name="Img_9h" Source="/ImgSource/iconsun.png" Width="40" Height="50" HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"></Image>
+                                                                </Button>
+                                                                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30">
+                                                                    <TextBlock x:Name="Txt_9h" FontSize="20" Panel.ZIndex="5" HorizontalAlignment="Center" FontFamily="Arial" FontWeight="SemiBold" >34°C</TextBlock>
+                                                                    <TextBlock FontFamily="Segoe UI" FontSize="15" Panel.ZIndex="5" HorizontalAlignment="Center"  VerticalAlignment="Bottom">Buổi sáng</TextBlock>
+                                                                </StackPanel>
+
+                                                            </Grid>
+                                                        </Border>
+                                                        <Border BorderThickness="0 0 1 0" BorderBrush="#c9c9cd" Grid.Column="2">
+                                                            <Grid >
+                                                                <Button VerticalAlignment="Top" HorizontalAlignment="Center" Style="{StaticResource button2}"
+                                                                        Margin="0 50 0 0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                                                    <Image x:Name="Img_15h" Source="/ImgSource/night/350.png"  Width="40" Height="50" HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"></Image>
+                                                                </Button>
+                                                                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30">
+                                                                    <TextBlock x:Name="Txt_15h" FontSize="20" Panel.ZIndex="5" HorizontalAlignment="Center" FontFamily="Arial" FontWeight="SemiBold"  >34°C</TextBlock>
+                                                                    <TextBlock FontSize="15" Panel.ZIndex="5" HorizontalAlignment="Center" FontFamily="Segoe UI"  VerticalAlignment="Bottom">Buổi chiều</TextBlock>
+                                                                </StackPanel>
+
+                                                            </Grid>
+                                                        </Border>
+                                                        <Grid Grid.Column="3">
+                                                            <Button VerticalAlignment="Top" HorizontalAlignment="Center" Style="{StaticResource button2}"
+                                                                        Margin="0 40 0 0">
+                                                                <Image x:Name="Img_21h" Source="/ImgSource/iconsun.png" Width="40" Height="50" HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"></Image>
+                                                            </Button>
+                                                            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30">
+                                                                <TextBlock x:Name="Txt_21h" FontSize="20" Panel.ZIndex="5" HorizontalAlignment="Center" FontFamily="Arial" FontWeight="SemiBold" >34°C</TextBlock>
+                                                                <TextBlock FontSize="15" Panel.ZIndex="5" HorizontalAlignment="Center" FontFamily="Segoe UI"  VerticalAlignment="Bottom">Buổi tối</TextBlock>
+                                                            </StackPanel>
+
+                                                        </Grid>
+                                                    </Grid>
+                                                    
+                                                </Border>
+
+
+                                            </Grid>
+                                            <!--column sun-->
+                                            <Grid Grid.Column="1">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="1.5*"></RowDefinition>
+                                                    <RowDefinition Height="3*"></RowDefinition>
+                                                </Grid.RowDefinitions>
+                                                <!--Widget 2-->
+                                                <Border  Grid.Column="1" Grid.Row="0" Padding="0">
+                                                        <Border ClipToBounds="True"  Padding="20 5 10 10">
+                                                            <StackPanel Margin="12 0 0 0" >
+                                                                <TextBlock Text="Mặt trời" Style="{StaticResource titleText}" Margin="0 10 0 25" FontSize="20"/>
+                                                            <uc:CardSunriseSunset x:Name="Card_SunriseSunset" Amount="50" Margin="10 10 0 0"></uc:CardSunriseSunset>
+                                                                <Grid Margin="-15 10 0 0 ">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition></ColumnDefinition>
+                                                                        <ColumnDefinition></ColumnDefinition>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <TextBlock x:Name="Lb_sunrise" Grid.Column="0" FontWeight="Bold" FontSize="12" TextAlignment="Left" Margin="-10 0 0 0">MT mọc: 05:48</TextBlock>
+                                                                    <TextBlock x:Name="Lb_sunset" Grid.Column="1" FontWeight="Bold" FontSize="12" TextAlignment="Right" Margin="0 0 -10 0">MT lặn: 17:50</TextBlock>
+                                                                </Grid>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </Border>
+                                                <!--Widget 6-->
+                                                <Grid Grid.Column="1" Grid.Row="1" Margin="3">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition ></RowDefinition>
+                                                        </Grid.RowDefinitions>
+                                                        <Border CornerRadius="25" Background="LightBlue"   Padding="15 5 5 0" Margin="0 0 -15 0" Grid.Row="0">
+                                                            <StackPanel>
+                                                                <TextBlock FontFamily="Segoe UI" Text="Chất lượng không khí" Style="{StaticResource titleText}" Margin="0 10 0 0" />
+                                                                <StackPanel >
+                                                                    <StackPanel Orientation="Vertical" Margin="0 20 0 10">
+                                                                        <TextBlock Text="Không tốt" FontWeight="SemiBold" FontSize="20" Margin="0 0 0 0"
+                                                                                   x:Name="lB_aqiindex"/>
+                                                                        <StackPanel Orientation="Horizontal" Margin="10 10 0 0">
+                                                                            <TextBlock x:Name="Lb_aqi" Text="72" FontWeight="SemiBold" FontSize="30"  />
+                                                                            <Border Width="50" Height="30" Background="#cce16a" Margin="20 0 0 0" CornerRadius="5"
+                                                                                    HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="2" BorderBrush="#3232a8">
+                                                                                <TextBlock Text="Aqi" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                            </Border>
+                                                                            
+                                                                        </StackPanel>
+                                                                        
+                                                                    </StackPanel>
+
+                                                                    <Border Style="{StaticResource widgetBorder1}" Height="50">
+                                                                        <DockPanel  HorizontalAlignment="Left"
+                                                                                    VerticalAlignment="Center" Width="155">
+                                                                            <Label FontWeight="SemiBold"
+                                                                                    VerticalAlignment="Center">O3</Label >
+                                                                            <StackPanel HorizontalAlignment="Center" Margin="27 0 0 0"
+                                                                                    VerticalAlignment="Center">
+                                                                                <Label FontWeight="SemiBold" Height="22" x:Name="Lb_o3">0.64</Label>
+                                                                                <Label>μg/m3</Label>
+                                                                            </StackPanel>
+                                                                            <Border x:Name="Level_o3" Background="#f57842" Width="20" Height="20" CornerRadius="5"  
+                                                                                    DockPanel.Dock="Right"></Border>
+                                                                        </DockPanel>
+                                                                    </Border>
+                                                                    <Border Style="{StaticResource widgetBorder1}">
+                                                                        <DockPanel  HorizontalAlignment="Left"
+                                                                                    VerticalAlignment="Center" Width="155">
+                                                                            <Label FontWeight="SemiBold"
+                                                                                    VerticalAlignment="Center">NO2</Label >
+                                                                            <StackPanel HorizontalAlignment="Center" Margin="17 0 0 0"
+                                                                                    VerticalAlignment="Center">
+                                                                                <Label FontWeight="SemiBold" Height="22" x:Name="Lb_no2">0.64</Label>
+                                                                                <Label>μg/m3</Label>
+                                                                            </StackPanel>
+                                                                            <Border x:Name="Level_no2" Background="Yellow" Width="20" Height="20" CornerRadius="5"  
+                                                                                    DockPanel.Dock="Right"></Border>
+                                                                        </DockPanel>
+                                                                    </Border>
+                                                                   
+                                                                    <Border Style="{StaticResource widgetBorder1}">
+                                                                        <DockPanel  HorizontalAlignment="Left"
+                                                                                    VerticalAlignment="Center" Width="155">
+                                                                            <Label FontWeight="SemiBold"
+                                                                                    VerticalAlignment="Center">PM10</Label >
+                                                                            <StackPanel HorizontalAlignment="Center" Margin="10 0 0 0"
+                                                                                    VerticalAlignment="Center">
+                                                                                <Label FontWeight="SemiBold" Height="22" x:Name="Lb_pm10">0.64</Label>
+                                                                                <Label>μg/m3</Label>
+                                                                            </StackPanel>
+                                                                            <Border x:Name="Level_pm10" Background="#f57842" Width="20" Height="20" CornerRadius="5"  
+                                                                                    DockPanel.Dock="Right"></Border>
+                                                                        </DockPanel>
+                                                                    </Border>
+                                                                    <Border Style="{StaticResource widgetBorder1}">
+                                                                        <DockPanel  HorizontalAlignment="Left"
+                                                                                    VerticalAlignment="Center" Width="155">
+                                                                            <Label FontWeight="SemiBold"
+                                                                                    VerticalAlignment="Center">PM2.5</Label >
+                                                                            <StackPanel HorizontalAlignment="Center" Margin="5 0 0 0"
+                                                                                    VerticalAlignment="Center">
+                                                                                <Label FontWeight="SemiBold" Height="22" x:Name="Lb_pm2_5">0.64</Label>
+                                                                                <Label>μg/m3</Label>
+                                                                            </StackPanel>
+                                                                            <Border x:Name="Level_pm2_5" Background="#42f55a" Width="20" Height="20" CornerRadius="5"  
+                                                                                    DockPanel.Dock="Right"></Border>
+                                                                        </DockPanel>
+                                                                    </Border>
+                                                                    
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </Grid>
+                                                    
+                                                </Grid>
+                                                
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </Border>
+
+
+                            <!--Page 2-->
+                            <Border x:Name="page2" Style="{StaticResource widgetBorder1}" Grid.Row="1" Margin="0">
+                                <Border.RenderTransform>
+                                    <TranslateTransform Y="{Binding ElementName=mainwindow,Path=ActualHeight}"/>
+                                </Border.RenderTransform>
+
+                                <Border CornerRadius="25">
+                                    <!--<Border.Background>
+                                        <ImageBrush ImageSource="/ImgSource/backgroud.png" Stretch="Fill" Opacity="0.1"/>
+                                    </Border.Background>-->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <ScrollViewer  Grid.Column="1" VerticalScrollBarVisibility="Visible">
+                                                <WrapPanel  Background="#f7f7f7">
+                                                    <StackPanel x:Name="WrapCard_Day" Orientation="Vertical" Margin="40 20 40 20">
+                                                        <uc:CardInfo x:Name="CardDay_0" Day="Thứ 2" InfoWeather="Có Mây" MaxNum="16°" MinNum="3°" Source="/ImgSource/day/179.png"/>
+                                                        <uc:CardInfo x:Name="CardDay_1" Day="Thứ 3" InfoWeather="Có Mây"  MaxNum="15°" MinNum="6°" Source="/ImgSource/night/263.png"/>
+                                                        <uc:CardInfo x:Name="CardDay_2" Day="Thứ 4" InfoWeather="Có Mây" MaxNum="1°" MinNum="-10°" Source="/ImgSource/day/119.png"/>
+                                                        <uc:CardInfo x:Name="CardDay_3" Day="Thứ 5" InfoWeather="Có Mây" MaxNum="7°" MinNum="-1°" Source="/ImgSource/night/113.png"/>
+                                                        <uc:CardInfo x:Name="CardDay_4" Day="Thứ 6" InfoWeather="Có Mây" MaxNum="14°" MinNum="3°" Source="/ImgSource/night/143.png"/>
+                                                        <uc:CardInfo x:Name="CardDay_5" Day="Thứ 7" InfoWeather="Có Mây" MaxNum="26°" MinNum="10°" Source="/ImgSource/day/299.png"/>
+                                                        <uc:CardInfo x:Name="CardDay_6" Day="Chủ Nhật" InfoWeather="Có Mây" MaxNum="3°" MinNum="-3°" Source="/ImgSource/day/263.png"/>
+                                                    </StackPanel>
+                                                </WrapPanel>
+                                            </ScrollViewer>
+                                        </Grid>
+                                        <Grid Grid.Column="1">
+                                            <Grid.Background>
+                                                <ImageBrush ImageSource="/ImgSource/sky-background.jpg" Stretch="Fill" TileMode="None" />
+                                            </Grid.Background>
+
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </Border>
+
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</Window>
